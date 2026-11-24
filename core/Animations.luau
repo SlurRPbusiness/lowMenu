@@ -51,7 +51,7 @@ end
 function Animations:OpenWindow(frame, originalSize, callback)
     frame.Visible = true
     frame.Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset * 0.92, originalSize.Y.Scale, originalSize.Y.Offset * 0.92)
-    
+
     local canvasGroup = frame:FindFirstChildOfClass("CanvasGroup")
     if canvasGroup then
         canvasGroup.GroupTransparency = 1
