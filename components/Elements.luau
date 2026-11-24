@@ -141,7 +141,7 @@ function Elements:CreateButton(container, config)
         Animations:Tween(btnFrame, 0.12, Animations.Styles.Smooth, Enum.EasingDirection.Out, {
             BackgroundColor3 = Theme.ContainerHover
         })
-        pcall(callback)
+        callback()
     end)
 
     return btnFrame
@@ -251,7 +251,7 @@ function Elements:CreateToggle(container, config)
                 Color = targetStrokeColor
             })
         end
-        pcall(callback, state)
+        callback(state)
     end
 
     toggleBtn.MouseEnter:Connect(function()
@@ -371,7 +371,7 @@ function Elements:CreateSlider(container, config)
         valueLabel.Text = tostring(currentValue)
 
         if not skipCallback then
-            pcall(callback, currentValue)
+            callback(currentValue)
         end
     end
 

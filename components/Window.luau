@@ -31,7 +31,7 @@ function Window.new(config)
     screenGui.Name = "lowsime_Gui"
     screenGui.ResetOnSpawn = false
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    screenGui.Parent = Utils:GetSafeGuiParent()
+    screenGui.Parent = Utils:GetSafeGuiParent(config.Parent)
     self.ScreenGui = screenGui
 
     -- Main Container Frame
@@ -192,7 +192,7 @@ function Window.new(config)
     self.ContentArea = contentArea
 
     -- Gestione Tasto Toggle (Apertura/Chiusura)
-    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    self._toggleConnection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if not gameProcessed and input.KeyCode == toggleKey then
             self:Toggle()
         end
@@ -241,10 +241,31 @@ function Window:Toggle()
 end
 
 function Window:Destroy()
+    if self._destroyed then
+        return
+    end
+    self._destroyed = true
+
+    if self._toggleConnection then
+        self._toggleConnection:Disconnect()
+        self._toggleConnection = nil
+    end
+
     if self.ScreenGui then
         self.ScreenGui:Destroy()
+        self.ScreenGui = nil
+    end
+
+    if self._onDestroy then
+        self._onDestroy(self)
+        self._onDestroy = nil
     end
 end
+
+Window.createTab = Window.CreateTab
+Window.selectTab = Window.SelectTab
+Window.toggle = Window.Toggle
+Window.destroy = Window.Destroy
 
 return Window
 

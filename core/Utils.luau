@@ -1,35 +1,25 @@
 --[[
     lowsime - Utilities
-    Funzioni di supporto, trascinamento finestra (Smooth Drag), supporto Solara/Executor
+    Funzioni di supporto per l'interfaccia Roblox Studio
 ]]
 
 local UserInputService = game:GetService("UserInputService")
-local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
 local Utils = {}
 
--- Rileva il genitore UI sicuro compatibile con Solara / Executor
-function Utils:GetSafeGuiParent()
-    local success, result = pcall(function()
-        -- Supporto per gethui (Roblox exploit standard: Solara, Wave, Synapse, etc.)
-        if typeof(gethui) == "function" then
-            return gethui()
-        end
-        return CoreGui
-    end)
-
-    if success and result then
-        return result
+function Utils:GetSafeGuiParent(parent)
+    if parent ~= nil then
+        assert(typeof(parent) == "Instance" and parent:IsA("PlayerGui"), "Parent must be a PlayerGui")
+        return parent
     end
 
-    -- Fallback per ambiente Studio o Player standard
     local localPlayer = Players.LocalPlayer
-    if localPlayer then
-        return localPlayer:WaitForChild("PlayerGui")
+    if not localPlayer then
+        error("lowsime UI must be created from a client LocalScript", 2)
     end
 
-    return CoreGui
+    return localPlayer:WaitForChild("PlayerGui")
 end
 
 -- Rende un frame trascinabile con inerzia fluida (Smooth Drag)

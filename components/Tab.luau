@@ -175,5 +175,10 @@ function Tab:AddSlider(config)
     return Elements:CreateSlider(self.PageFrame, config)
 end
 
+Tab.createSection = Tab.AddSection
+Tab.button = Tab.AddButton
+Tab.toggle = Tab.AddToggle
+Tab.slider = Tab.AddSlider
+
 return Tab
 
